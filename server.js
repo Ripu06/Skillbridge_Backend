@@ -24,7 +24,7 @@ app.use(cors({
     
     const allowedOrigins = [
       'http://localhost:5173', // Local development
-      'https://skillbridge-frontend.vercel.app', // Your Vercel frontend (update this later)
+     process.env.FRONTEND_URL // Your Vercel frontend (update this later)
     ];
     
     if (allowedOrigins.indexOf(origin) !== -1) {
