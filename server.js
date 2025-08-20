@@ -17,19 +17,21 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
+// Replace your CORS configuration with this:
 app.use(cors({
-  origin: function(origin, callback) {
+  origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps, Postman, etc.)
     if (!origin) return callback(null, true);
     
     const allowedOrigins = [
       'http://localhost:5173', // Local development
-     process.env.FRONTEND_URL // Your Vercel frontend (update this later)
+      process.env.FRONTEND_URL // REPLACE WITH YOUR ACTUAL VERCEL URL
     ];
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.log('CORS blocked for origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -48,7 +50,9 @@ app.get('/api/health', (req, res) => {
   res.json({ message: 'Server is running!' });
 });
 
+//Remove 
 // Serve static files in production
+/*
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/dist')));
   
@@ -56,6 +60,19 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, '../client/dist/index.html'));
   });
 }
+  */
+
+// Your API routes only
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/requests', requestRoutes);
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ message: 'Server is running!' });
+});
+
+// No static file serving needed since frontend is on Vercel
 
 const PORT = process.env.PORT || 5000;
 
