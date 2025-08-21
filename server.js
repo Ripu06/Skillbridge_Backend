@@ -16,6 +16,7 @@ import requestRoutes from './routes/requestRoutes.js';
 dotenv.config();
 const app = express();
 
+/*
 // CORS configuration
 // Replace your CORS configuration with this:
 app.use(cors({
@@ -37,6 +38,22 @@ app.use(cors({
   },
   credentials: true
 }));
+*/
+
+//Testing coros to all 
+// SIMPLE CORS - ALLOW ALL ORIGINS TEMPORARILY
+app.use(cors({
+  origin: true, // Allow ALL origins temporarily
+  credentials: true
+}));
+
+// Add debug logging to see what's happening
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  console.log('Origin:', req.headers.origin);
+  console.log('User-Agent:', req.headers['user-agent']);
+  next();
+});
 
 app.use(express.json());
 
